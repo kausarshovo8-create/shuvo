@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
-<title>Shafa Only 💗</title>
+<title>Do you like me, Shafa? 💖</title>
 
 <style>
 *{box-sizing:border-box}
@@ -30,10 +30,10 @@ body{
   text-align:center;
   box-shadow:0 15px 35px rgba(0,0,0,.2);
   position:relative;
-  animation:fadeIn .7s;
+  animation:fadeIn .6s ease;
 }
 @keyframes fadeIn{
-  from{opacity:0;transform:scale(.8)}
+  from{opacity:0;transform:scale(.75)}
   to{opacity:1;transform:scale(1)}
 }
 
@@ -65,15 +65,41 @@ button{
   background:#ddd;
   color:#333;
   position:absolute;
+  left:50%;
+  top:60%;
+  transform:translate(-50%,-50%);
 }
 
-/* Message */
+/* Fast Shake */
+.shake{
+  animation:shake .45s linear;
+}
+@keyframes shake{
+  0%{transform:translateX(0)}
+  20%{transform:translateX(-12px)}
+  40%{transform:translateX(12px)}
+  60%{transform:translateX(-9px)}
+  80%{transform:translateX(9px)}
+  100%{transform:translateX(0)}
+}
+
 #msg{
   margin-top:15px;
   font-size:16px;
   min-height:20px;
   color:#6a2f73;
   font-weight:600;
+}
+
+/* Emoji Burst */
+.emoji{
+  position:absolute;
+  pointer-events:none;
+  animation:floatUp .9s ease forwards;
+}
+@keyframes floatUp{
+  from{transform:translateY(0) scale(1);opacity:1}
+  to{transform:translateY(-80px) scale(1.7);opacity:0}
 }
 
 /* Confetti */
@@ -86,17 +112,6 @@ button{
 }
 @keyframes fall{
   to{transform:translateY(120vh) rotate(720deg)}
-}
-
-/* Emoji Stickers */
-.sticker{
-  position:fixed;
-  font-size:32px;
-  animation:float 3s ease-out forwards;
-}
-@keyframes float{
-  from{opacity:0;transform:translateY(10px)}
-  to{opacity:1;transform:translateY(-120px)}
 }
 
 /* Popup */
@@ -121,10 +136,10 @@ button{
   border-radius:18px;
   text-align:center;
   width:320px;
-  animation:pop .5s;
+  animation:pop .45s;
 }
 @keyframes pop{
-  from{transform:scale(.7);opacity:.2}
+  from{transform:scale(.7);opacity:.3}
   to{transform:scale(1);opacity:1}
 }
 .popup h3{
@@ -156,13 +171,12 @@ button{
 
 <body>
 
-<audio id="bgm" src="music.mp3" loop preload="auto"></audio>
-<audio id="rain" src="rain-lofi.mp3" loop preload="auto"></audio>
+<audio id="bgm" src="rain-lofi.mp3" loop preload="auto"></audio>
 
 <div class="rain"></div>
 
-<div class="card">
-  <h2>Shafa Only Mode 💗</h2>
+<div class="card" id="card">
+  <h2>Do you like me, Shafa? 💖</h2>
   <button id="yes">Yes</button>
   <button id="no">No</button>
   <div id="msg"></div>
@@ -171,7 +185,7 @@ button{
 <div class="popup" id="popup">
   <div class="popup-box">
     <h3>Accepted! 💞</h3>
-    <p>You are now officially my favorite human ❤️<br><br>Thanks for choosing me 😌</p>
+    <p>You are now officially my favorite human ❤️<br><br>I won't stop smiling today 😌</p>
   </div>
 </div>
 
@@ -179,19 +193,51 @@ button{
 const yes = document.getElementById('yes');
 const no = document.getElementById('no');
 const msg = document.getElementById('msg');
-const bgm = document.getElementById('bgm');
-const rain = document.getElementById('rain');
 const popup = document.getElementById('popup');
+const bgm = document.getElementById('bgm');
+const card = document.getElementById('card');
 
-const funnyTexts=[
-  "Denied? Never! 😆",
-  "You missed! 😂",
-  "Button.exe ran away!",
-  "Try catching me 😉",
-  "Shafa can't reject!"
+const texts=[
+  "Nope 😆",
+  "Catch me if you can 😂",
+  "Denied! 😜",
+  "Hehe nice try 😉",
+  "Button escaped 😎"
 ];
 
-const stickers=["🐻","🐰","🧸","💕","💗","💖","✨","🌸"];
+function emojiBurst(x,y){
+  const emojis=["😂","🤣","😜","🙃","😎","🤡","💀"];
+  const count=3+Math.floor(Math.random()*3);
+  for(let i=0;i<count;i++){
+    const e=document.createElement("div");
+    e.className="emoji";
+    e.textContent=emojis[Math.floor(Math.random()*emojis.length)];
+    e.style.fontSize=(28+Math.random()*18)+"px";
+    e.style.left=(x+(Math.random()*60-30))+"px";
+    e.style.top=(y+(Math.random()*30-10))+"px";
+    card.appendChild(e);
+    setTimeout(()=>e.remove(),900);
+  }
+}
+
+function moveNo(){
+  const r = card.getBoundingClientRect();
+  const b = no.getBoundingClientRect();
+  const nx = Math.random()*(r.width-b.width);
+  const ny = Math.random()*(r.height-b.height);
+  no.style.left=nx+"px";
+  no.style.top=ny+"px";
+  no.style.transform="translate(0,0)";
+  msg.textContent=texts[Math.floor(Math.random()*texts.length)];
+  card.classList.remove("shake");
+  void card.offsetWidth;
+  card.classList.add("shake");
+  emojiBurst(b.left-r.left+b.width/2, b.top-r.top+b.height/2);
+}
+
+no.addEventListener("mouseenter",moveNo);
+no.addEventListener("click",e=>{e.preventDefault();moveNo();});
+no.addEventListener("touchstart",moveNo);
 
 function confetti(){
   for(let i=0;i<40;i++){
@@ -205,46 +251,19 @@ function confetti(){
   }
 }
 
-function stickerBurst(){
-  for(let i=0;i<6;i++){
-    const s=document.createElement('div');
-    s.className='sticker';
-    s.textContent=stickers[Math.floor(Math.random()*stickers.length)];
-    s.style.left=(Math.random()*80+10)+"vw";
-    s.style.top=(Math.random()*60+20)+"vh";
-    document.body.appendChild(s);
-    setTimeout(()=>s.remove(),2500);
-  }
-}
-
-function moveNo(){
-  const x=Math.random()*(window.innerWidth-80);
-  const y=Math.random()*(window.innerHeight-60);
-  no.style.left=x+"px";
-  no.style.top=y+"px";
-  msg.textContent=funnyTexts[Math.floor(Math.random()*funnyTexts.length)];
-  stickerBurst();
-}
-
-no.onmouseover = moveNo;
-no.ontouchstart = moveNo;
-
 yes.onclick=()=>{
   confetti();
   popup.classList.add('active');
   msg.textContent="I knew it 😏❤️";
   bgm.pause();
-  rain.pause();
-  const romantic=new Audio('music.mp3');
-  romantic.volume=0.8;
+  const romantic=new Audio("music.mp3");
+  romantic.volume=.90;
   romantic.play();
 };
 
 window.onload=()=>{
-  bgm.volume=.55;
-  rain.volume=.35;
+  bgm.volume=.45;
   bgm.play().catch(()=>{});
-  rain.play().catch(()=>{});
 };
 </script>
 

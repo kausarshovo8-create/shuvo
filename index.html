@@ -1,101 +1,251 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>For You, Shafa ❤️</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<title>Shafa Only 💗</title>
 
 <style>
-    body {
-        margin: 0;
-        height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #ffe3f3;
-        font-family: 'Segoe UI', sans-serif;
-    }
+*{box-sizing:border-box}
+body{
+  margin:0;
+  height:100vh;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:#ffe3f3;
+  overflow:hidden;
+  font-family:"Segoe UI",sans-serif;
+  transition:background .8s ease;
+}
 
-    .card {
-        width: 300px;
-        background: white;
-        border-radius: 15px;
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-        text-align: center;
-        padding: 20px;
-    }
+/* CARD */
+.card{
+  width:340px;
+  max-width:92%;
+  background:white;
+  border-radius:20px;
+  padding:30px;
+  text-align:center;
+  box-shadow:0 15px 35px rgba(0,0,0,.2);
+  position:relative;
+  animation:fadeIn .7s;
+}
+@keyframes fadeIn{
+  from{opacity:0;transform:scale(.8)}
+  to{opacity:1;transform:scale(1)}
+}
 
-    h2 {
-        font-size: 20px;
-        color: #ff4d8f;
-        margin-bottom: 25px;
-    }
+h2{
+  font-size:24px;
+  margin-bottom:18px;
+  color:#ff4d8f;
+  font-weight:600;
+}
 
-    button {
-        padding: 10px 20px;
-        border: none;
-        border-radius: 25px;
-        font-size: 16px;
-        cursor: pointer;
-        transition: 0.15s;
-    }
+button{
+  padding:12px 22px;
+  border:none;
+  border-radius:16px;
+  font-size:16px;
+  cursor:pointer;
+  transition:.15s;
+  user-select:none;
+}
 
-    #yesBtn {
-        background: #ff4d8f;
-        color: white;
-        margin-right: 10px;
-    }
+#yes{
+  background:#ff4d8f;
+  color:white;
+  margin-right:10px;
+}
+#yes:active{transform:scale(.92)}
 
-    #yesBtn:active {
-        transform: scale(0.95);
-    }
+#no{
+  background:#ddd;
+  color:#333;
+  position:absolute;
+}
 
-    #noBtn {
-        background: #ddd;
-        color: #333;
-        position: absolute;
-    }
+/* Message */
+#msg{
+  margin-top:15px;
+  font-size:16px;
+  min-height:20px;
+  color:#6a2f73;
+  font-weight:600;
+}
 
-    #msg {
-        margin-top: 15px;
-        font-size: 16px;
-        color: #6a2f73;
-        min-height: 20px;
-        font-weight: 600;
-    }
+/* Confetti */
+.confetti{
+  position:fixed;
+  width:10px;height:10px;
+  background:hsl(var(--h),80%,60%);
+  top:-10px;
+  animation:fall linear forwards;
+}
+@keyframes fall{
+  to{transform:translateY(120vh) rotate(720deg)}
+}
+
+/* Emoji Stickers */
+.sticker{
+  position:fixed;
+  font-size:32px;
+  animation:float 3s ease-out forwards;
+}
+@keyframes float{
+  from{opacity:0;transform:translateY(10px)}
+  to{opacity:1;transform:translateY(-120px)}
+}
+
+/* Popup */
+.popup{
+  position:fixed;
+  inset:0;
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  background:rgba(0,0,0,.65);
+  opacity:0;
+  pointer-events:none;
+  transition:.35s;
+}
+.popup.active{
+  opacity:1;
+  pointer-events:auto;
+}
+.popup-box{
+  background:white;
+  padding:35px 30px;
+  border-radius:18px;
+  text-align:center;
+  width:320px;
+  animation:pop .5s;
+}
+@keyframes pop{
+  from{transform:scale(.7);opacity:.2}
+  to{transform:scale(1);opacity:1}
+}
+.popup h3{
+  color:#ff4d8f;
+  font-size:26px;
+  margin:0 0 10px;
+}
+.popup p{
+  font-size:18px;
+  color:#555;
+  margin:0;
+}
+
+/* Rain overlay */
+.rain{
+  position:fixed;
+  inset:0;
+  pointer-events:none;
+  background:url('https://i.ibb.co/DKp5v0N/rain-fx.png');
+  background-size:cover;
+  opacity:.18;
+  animation:rainMove 4s linear infinite;
+}
+@keyframes rainMove{
+  to{background-position:0 600px}
+}
 </style>
 </head>
 
 <body>
 
-<audio id="bgm" autoplay loop volume="0.4">
-    <source src="music.mp3" type="audio/mp3">
-</audio>
+<audio id="bgm" src="music.mp3" loop preload="auto"></audio>
+<audio id="rain" src="rain-lofi.mp3" loop preload="auto"></audio>
+
+<div class="rain"></div>
 
 <div class="card">
-    <h2>Do you like me, Shafa? 💖</h2>
-    <button id="yesBtn">Yes</button>
-    <button id="noBtn">No</button>
-    <div id="msg"></div>
+  <h2>Shafa Only Mode 💗</h2>
+  <button id="yes">Yes</button>
+  <button id="no">No</button>
+  <div id="msg"></div>
+</div>
+
+<div class="popup" id="popup">
+  <div class="popup-box">
+    <h3>Accepted! 💞</h3>
+    <p>You are now officially my favorite human ❤️<br><br>Thanks for choosing me 😌</p>
+  </div>
 </div>
 
 <script>
-const yesBtn = document.getElementById('yesBtn');
-const noBtn = document.getElementById('noBtn');
+const yes = document.getElementById('yes');
+const no = document.getElementById('no');
 const msg = document.getElementById('msg');
+const bgm = document.getElementById('bgm');
+const rain = document.getElementById('rain');
+const popup = document.getElementById('popup');
 
-yesBtn.onclick = ()=>{
-    msg.innerHTML = "I knew it 😏❤️";
+const funnyTexts=[
+  "Denied? Never! 😆",
+  "You missed! 😂",
+  "Button.exe ran away!",
+  "Try catching me 😉",
+  "Shafa can't reject!"
+];
+
+const stickers=["🐻","🐰","🧸","💕","💗","💖","✨","🌸"];
+
+function confetti(){
+  for(let i=0;i<40;i++){
+    const c=document.createElement('div');
+    c.className='confetti';
+    c.style.left=Math.random()*100+"vw";
+    c.style.setProperty('--h',Math.random()*360);
+    c.style.animationDuration=2+Math.random()*2+"s";
+    document.body.appendChild(c);
+    setTimeout(()=>c.remove(),4000);
+  }
+}
+
+function stickerBurst(){
+  for(let i=0;i<6;i++){
+    const s=document.createElement('div');
+    s.className='sticker';
+    s.textContent=stickers[Math.floor(Math.random()*stickers.length)];
+    s.style.left=(Math.random()*80+10)+"vw";
+    s.style.top=(Math.random()*60+20)+"vh";
+    document.body.appendChild(s);
+    setTimeout(()=>s.remove(),2500);
+  }
+}
+
+function moveNo(){
+  const x=Math.random()*(window.innerWidth-80);
+  const y=Math.random()*(window.innerHeight-60);
+  no.style.left=x+"px";
+  no.style.top=y+"px";
+  msg.textContent=funnyTexts[Math.floor(Math.random()*funnyTexts.length)];
+  stickerBurst();
+}
+
+no.onmouseover = moveNo;
+no.ontouchstart = moveNo;
+
+yes.onclick=()=>{
+  confetti();
+  popup.classList.add('active');
+  msg.textContent="I knew it 😏❤️";
+  bgm.pause();
+  rain.pause();
+  const romantic=new Audio('music.mp3');
+  romantic.volume=0.8;
+  romantic.play();
 };
 
-function moveNo() {
-    const x = Math.random() * (window.innerWidth - 80);
-    const y = Math.random() * (window.innerHeight - 50);
-    noBtn.style.left = x + "px";
-    noBtn.style.top = y + "px";
-}
-noBtn.onmouseover = moveNo;
-noBtn.ontouchstart = moveNo;
+window.onload=()=>{
+  bgm.volume=.55;
+  rain.volume=.35;
+  bgm.play().catch(()=>{});
+  rain.play().catch(()=>{});
+};
 </script>
 
 </body>

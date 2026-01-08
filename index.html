@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Do You Like Me?</title>
+<title>For You, Shafa ❤️</title>
 
 <style>
     body {
@@ -67,7 +67,6 @@
         top: 230px;
     }
 
-    /* Modal */
     .modal {
         display: none;
         position: fixed;
@@ -110,13 +109,16 @@
 
 <body>
 
+<audio id="bgm" autoplay loop>
+    <source src="music.mp3" type="audio/mp3">
+</audio>
+
 <div class="card">
-    <h2>Do you like me? 💖</h2>
+    <h2>Do you like me, Shafa? 💖</h2>
     <button id="yesBtn" onclick="openModal()">Yes</button>
     <button id="noBtn" onmouseover="moveNo()">No</button>
 </div>
 
-<!-- Modal -->
 <div class="modal" id="modal">
     <div class="modal-content">
         <div class="heart">❤️</div>

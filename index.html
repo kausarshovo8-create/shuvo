@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>instagram: @pythonlearnerr</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            width: 400px;
+            height: 400px;
+            background: white;
+            margin: 50px auto;
+            position: relative;
+            text-align: center;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.2);
+        }
+
+        h2 {
+            padding-top: 30px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+
+        #yesBtn {
+            margin-top: 20px;
+        }
+
+        #noBtn {
+            position: absolute;
+            left: 170px;
+            top: 200px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>Do you like me?</h2>
+
+    <button id="yesBtn" onclick="showPopup()">Yes</button>
+    <button id="noBtn" onmouseover="moveButton()">No</button>
+</div>
+
+<script>
+    function showPopup() {
+        alert("Thanks for Accepting");
+    }
+
+    function moveButton() {
+        const container = document.querySelector('.container');
+        const noBtn = document.getElementById('noBtn');
+
+        const maxX = container.clientWidth - noBtn.offsetWidth;
+        const maxY = container.clientHeight - noBtn.offsetHeight;
+
+        const x = Math.random() * maxX;
+        const y = Math.random() * maxY;
+
+        noBtn.style.left = x + "px";
+        noBtn.style.top = y + "px";
+    }
+</script>
+
+</body>
+</html>
